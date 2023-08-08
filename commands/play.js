@@ -66,7 +66,10 @@ module.exports = {
         content: `⏱ | Loading your ${searchResult.playlist ? 'playlist' : 'track'}...`,
       });
       searchResult.playlist ? queue.addTracks(searchResult.tracks) : queue.addTrack(searchResult.tracks[0]);
-      if (!queue.playing) await queue.play();
+      if (!queue.playing){
+       queue.setVolume(parseInt(process.env.VOLUME_DEFAULT));
+        await queue.play();
+      } 
     } catch (error) {
       console.log(error);
       interaction.followUp({

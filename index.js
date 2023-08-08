@@ -22,6 +22,7 @@ console.log(client.commands);
 
 const player = new Player(client);
 
+
 player.on('error', (queue, error) => {
   console.log(`[${queue.guild.name}] Error emitted from the queue: ${error.message}`);
 });
@@ -32,6 +33,10 @@ player.on('connectionError', (queue, error) => {
 
 player.on('trackStart', (queue, track) => {
   queue.metadata.send(`▶ | Started playing: **${track.title}** in **${queue.connection.channel.name}**!`);
+  client.user.setPresence({
+    activities: [{ name: config.activity, type: config.activityType }],
+    status: `Playing: **${track.title}** in **${queue.connection.channel.name}**!`,
+  });
 });
 
 player.on('trackAdd', (queue, track) => {
@@ -84,6 +89,7 @@ client.on('messageCreate', async message => {
         console.error(err);
       });
   }
+
 });
 
 client.on('interactionCreate', async interaction => {
